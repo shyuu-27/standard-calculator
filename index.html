@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator Widget</title>
+  <style> 
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .calculator {
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+      width: 320px;
+    }
+    h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    #display {
+      width: 92.5%;
+      background: #2a2a2a;
+      border: none;
+      border-radius: 6px;
+      padding: 12px;
+      text-align: right;
+      font-size: 18px;
+      color: #ffffff;
+      margin-bottom: 15px;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    button {
+      background: #2a2a2a;
+      border: none;
+      border-radius: 6px;
+      padding: 15px;
+      font-size: 16px;
+      color: #ffffff;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #3a3a3a;
+    }
+    button:active {
+      background: #4cafef;
+    }
+    .equal {
+      background-color: #EDF3EC;
+      color: #000000;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h2>Calculator</h2>
+    <input type="text" id="display" disabled>
+    <div class="buttons">
+      <button onclick="press('%')">%</button>
+      <button onclick="clearDisplay()">C</button>
+      <button onclick="deleteLast()">⌫</button>
+      <button onclick="press('÷')">÷</button>
+
+      <button onclick="press('7')">7</button>
+      <button onclick="press('8')">8</button>
+      <button onclick="press('9')">9</button>
+      <button onclick="press('×')">×</button>
+
+      <button onclick="press('4')">4</button>
+      <button onclick="press('5')">5</button>
+      <button onclick="press('6')">6</button>
+      <button onclick="press('-')">−</button>
+
+      <button onclick="press('1')">1</button>
+      <button onclick="press('2')">2</button>
+      <button onclick="press('3')">3</button>
+      <button onclick="press('+')">+</button>
+
+      <button onclick="press('+/-')">±</button>
+      <button onclick="press('0')">0</button>
+      <button onclick="press('.')">.</button>
+      <button onclick="calculate()" class="equal">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+    let errorState = false;
+
+    function press(value) {
+      if (errorState) {
+        clearDisplay();
+      }
+      if (value === '+/-') {
+        if (display.value && !isNaN(display.value)) {
+          if (display.value.startsWith('-')) {
+            display.value = display.value.substring(1);
+          } else {
+            display.value = '-' + display.value;
+          }
+        }
+        return;
+      }
+      display.value += value;
+    }
+
+    function calculate() {
+      try {
+        // Replace symbols for eval
+        let expression = display.value.replace(/÷/g, "/").replace(/×/g, "*").replace(/%/, "/100");
+        if (expression.trim() === '') return;
+        display.value = eval(expression);
+      } catch {
+        display.value = "Error";
+        errorState = true;
+      }
+    }
+
+    function clearDisplay() {
+      display.value = '';
+      errorState = false;
+    }
+
+    function deleteLast() {
+      if (errorState) {
+        clearDisplay();
+      } else {
+        display.value = display.value.slice(0, -1);
+      }
+    }
+  </script>
+</body>
+</html>
