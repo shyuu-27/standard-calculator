@@ -16,10 +16,9 @@
       height: 100vh;
     }
     .calculator {
-      background-color: transparent;
+      background-color: #transparent;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
       width: 320px;
     }
     h2 {
@@ -68,7 +67,6 @@
 </head>
 <body>
   <div class="calculator">
-    <h2>Calculator</h2>
     <input type="text" id="display" disabled>
     <div class="buttons">
       <button onclick="press('%')">%</button>
@@ -101,10 +99,17 @@
   <script>
     const display = document.getElementById('display');
     let errorState = false;
+    let evalState = false;
 
     function press(value) {
       if (errorState) {
         clearDisplay();
+      } else if (evalState) {
+      	if ("0123456789".includes(value)) {
+      	  clearDisplay();
+      	} else {
+      	  evalState = false;
+      	}
       }
       if (value === '+/-') {
         if (display.value && !isNaN(display.value)) {
@@ -125,6 +130,7 @@
         let expression = display.value.replace(/÷/g, "/").replace(/×/g, "*").replace(/%/, "/100");
         if (expression.trim() === '') return;
         display.value = eval(expression);
+	      evalState = true;
       } catch {
         display.value = "Error";
         errorState = true;
@@ -134,6 +140,7 @@
     function clearDisplay() {
       display.value = '';
       errorState = false;
+      evalState = false;
     }
 
     function deleteLast() {
