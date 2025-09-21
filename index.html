@@ -16,13 +16,14 @@
       height: 100vh;
     }
     .calculator {
-      background-color: #transparent;
+      background-color: transparent;
       padding: 20px;
       border-radius: 12px;
       width: 320px;
     }
     h2 {
-      font-size: 18px;
+      font-size: 14px;
+      font-weight: normal;
       margin-bottom: 15px;
       text-align: center;
     }
@@ -67,6 +68,7 @@
 </head>
 <body>
   <div class="calculator">
+    <h2>Calculator</h2>
     <input type="text" id="display" disabled>
     <div class="buttons">
       <button onclick="press('%')">%</button>
@@ -144,9 +146,10 @@
     }
 
     function deleteLast() {
-      if (errorState) {
+      if (errorState || evalState) {
         clearDisplay();
-      } else {
+      }
+	  else {
         display.value = display.value.slice(0, -1);
       }
     }
